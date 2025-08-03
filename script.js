@@ -1,24 +1,19 @@
-document.addEventListener('DOMContentLoaded' // Add task when button is clicked
-addButton.addEventListener('click', addTask);
-
-// Add task when Enter key is pressed in the input field
-taskInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        addTask();
-    }
-});, function() {
+document.addEventListener('DOMContentLoaded', function() {
+    // Select DOM elements
     const addButton = document.getElementById('add-task-btn');
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
 
     let tasks = [];
 
+    // Load tasks from local storage
     function loadTasks() {
         const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
         tasks = storedTasks;
         storedTasks.forEach(taskText => addTask(taskText, false));
     }
 
+    // Add task function
     function addTask(taskText, save = true) {
         if (typeof taskText !== 'string') {
             taskText = taskInput.value.trim();
@@ -52,17 +47,22 @@ taskInput.addEventListener('keypress', (event) => {
         taskInput.value = '';
     }
 
+    // Remove task from local storage
     function removeTaskFromStorage(taskText) {
         tasks = tasks.filter(task => task !== taskText);
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
-    loadTasks();
-
+    // ✅ Event listener for Add Task button
     addButton.addEventListener('click', () => addTask());
+
+    // ✅ Event listener for Enter key in input
     taskInput.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             addTask();
         }
     });
+
+    // Load tasks on page load
+    loadTasks();
 });
